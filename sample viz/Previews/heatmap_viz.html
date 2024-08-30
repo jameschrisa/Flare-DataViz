@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flare Status Heatmap (Visual Map on Top)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.2/echarts.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+
+  
+    <style>
+ body {
+      font-family: Poppins, sans-serif;
+      font-size: 12px;
+      
+      
+    }
+    .legend-box {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      display:inline-block;
+      vertical-align:top;
+    }
+
+    #chart-container {
+        width: 100%;
+        min-height: 800px; /* Set minimum height to ensure labels are visible */
+        overflow-y: auto; /* Add scrollbar if content exceeds container height */
+        padding: 30px; /* Add some padding to accommodate labels */
+    }
+
+    #container-top {
+        margin-left: 50px;
+        padding-left: 50px;
+    }
+
+
+    </style>
+</head>
+<body>
+    <div id="container-top">
+    <h1>50 Flares Status Heatmap Visualization</h1>
+        <div class="legend-box">
+            <span style="background-color:#384B9F;color:white;padding:2px;border-radius:2px;">0.0: Flare is completely off (no burning)</span><br>
+            <span style="background-color:#4444FF;color:white;padding:2px;border-radius:2px;">0.1-0.2: Pilot flame present (small, stable flame)</span><br>
+            <span style="background-color:#8888FF;color:white;padding:2px;border-radius:2px;">0.3-0.4: Sparking or intermittent ignition (unstable flame)</span><br>
+            <span style="background-color:#FFF5B1;color:black;padding:2px;border-radius:2px;">0.5: Smoldering or glowing (no open flame)</span><br>
+            <span style="background-color:#F99254;color:white;padding:2px;border-radius:2px;">0.6-0.7: Low-intensity burning (small, flickering flame)</span><br>
+            <span style="background-color:#FF4444;color:white;padding:2px;border-radius:2px;">0.8: Medium-intensity burning (steady, moderate flame)</span><br>
+            <span style="background-color:#D32D28;color:white;padding:2px;border-radius:2px;">0.9: High-intensity burning (large, intense flame)</span><br>
+            <span style="background-color:#A50026;color:white;padding:2px;border-radius:2px;">1.0: Flare is fully on (maximum burning intensity)</span>
+        </div>
+    </div>    
+
+
+    <div id="chart-container"></div>
+
+    <script>
+        function generateData() {
+            const data = [];
+            for (let i = 0; i < 100; i++) {
+                for (let j = 0; j < 24; j++) {
+                    let value = Math.random();
+                    value = Math.pow(value, 0.3);
+                    data.push([j, i, value]);
+                }
+            }
+            return data;
+        }
+
+        function initChart() {
+            const chartDom = document.getElementById('chart-container');
+            const myChart = echarts.init(chartDom);
+            const option = {
+                tooltip: {
+                    position: 'top',
+                    formatter: function (params) {
+                        return `Hour: ${params.data[0]}<br>Flare ID: ${params.data[1]}<br>Status: ${params.data[2].toFixed(2)}`;
+                    }
+                },
+                grid: {
+                    height: 'auto',
+                    top: '15%'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: Array.from({length: 24}, (_, i) => i),
+                    splitArea: {
+                        show: true
+                    },
+                    name: '24 Hour Period',
+                    nameLocation: 'middle',
+                    nameGap: 25
+                },
+                yAxis: {
+                    type: 'category',
+                    data: Array.from({length: 50}, (_, i) => `Flare ${i + 1}`),
+                    splitArea: {
+                        show: true
+                    },
+                    name: 'Flare Tower ID',
+                    nameLocation: 'middle',
+                    nameGap: 100
+                },
+                visualMap: {
+                    min: 0,
+                    max: 1,
+                    calculable: true,
+                    orient: 'horizontal',
+                    left: 'center',
+                    top: '4%',
+                    inRange: {
+                        color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+                    }
+                },
+                series: [{
+                    name: 'Flare Status',
+                    type: 'heatmap',
+                    data: generateData(),
+                    label: {
+                        show: false
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            };
+
+            option && myChart.setOption(option);
+
+            window.addEventListener('resize', function() {
+                myChart.resize();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initChart);
+    </script>
+</body>
+</html>
