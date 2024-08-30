@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap");
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #1f2937;
+  color: #f3f4f6;
+  margin: 0;
+  padding: 20px;
+}
+
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.flare-selector {
+  margin-bottom: 20px;
+}
+
+.flare-selector select {
+  margin-left: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #374151;
+  color: #f3f4f6;
+  border: 1px solid #4b5563;
+}
+
+.gauge-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.gauge-chart {
+  width: 30%;
+  text-align: center;
+}
+
+.gauge-chart h3 {
+  margin-bottom: 20px;
+}
+
+.chart-container {
+  position: relative;
+  height: 100px;
+}
+
+.gauge-value {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 34px;
+  font-weight: bold;
+}
+
+.line-chart-container {
+  background-color: #374151;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.line-chart-container h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
